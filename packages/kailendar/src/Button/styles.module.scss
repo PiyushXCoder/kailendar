@@ -1,0 +1,19 @@
+.kailendarBtn {
+  padding: 80px 160px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-size: 100px;
+  background-color: lightcoral;
+  color: white;
+  font-weight: 800;
+  outline: none;
+
+  &:hover {
+    background-color: coral;
+  }
+
+  &:active {
+    background-color: darkred;
+  }
+}

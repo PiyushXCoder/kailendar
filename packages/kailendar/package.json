@@ -1,0 +1,35 @@
+{
+  "name": "kailendar",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/kailendar.umd.cjs",
+  "module": "./dist/kailendar.js",
+  "exports": {
+    ".": {
+      "import": "./dist/kailendar.js",
+      "require": "./dist/kailendar.umd.cjs",
+      "types": "./dist/src/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@vitejs/plugin-react": "^6.0.1",
+    "sass": "^1.99.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.4",
+    "vite-plugin-css-injected-by-js": "^4.0.1",
+    "vite-plugin-dts": "^4.5.4"
+  },
+  "peerDependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}
