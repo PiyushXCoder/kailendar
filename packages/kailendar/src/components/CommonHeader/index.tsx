@@ -12,8 +12,8 @@ import {
 import {
   KailendarView,
   KAILENDAR_VIEWS,
-  KAILENDAR_VIEWS_ARR,
 } from "../../utils/constants";
+import ViewSwitcher from "../ViewSwitcher";
 import styles from "./styles.module.scss";
 
 interface CommonHeaderProps {
@@ -81,19 +81,10 @@ export default function CommonHeader({
         <div className={styles.title}>{getTitle()}</div>
       </div>
       <div className={styles.navigation}>
-        <select
-          className={styles.viewSelector}
-          value={view}
-          onChange={(e) => setView(e.target.value as KailendarView)}
-        >
-          {KAILENDAR_VIEWS_ARR.filter(
-            (v) => v != KAILENDAR_VIEWS.MONTH_MINI,
-          ).map((v) => (
-            <option key={v} value={v}>
-              {v.charAt(0).toUpperCase() + v.slice(1)}
-            </option>
-          ))}
-        </select>
+        <ViewSwitcher
+          view={view as "day" | "week" | "month" | "year"}
+          onViewChange={(v) => setView(v as any)}
+        />
         <button className={styles.navButton} onClick={goToPrev}>
           {"<"}
         </button>

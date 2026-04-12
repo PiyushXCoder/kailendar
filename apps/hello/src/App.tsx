@@ -57,7 +57,7 @@ const mockEvents: Event[] = [
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [view, setView] = useState("month-mini");
+  const [view, setView] = useState("month");
 
   const getEvents = (start: Date, end: Date): Event[] => {
     return mockEvents.filter(

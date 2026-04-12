@@ -6,6 +6,7 @@ import DayView from "./DayView";
 import WeekView from "./WeekView";
 import MonthView from "./MonthView";
 import CommonHeader from "../components/CommonHeader";
+import styles from "./styles.module.scss";
 
 export type { KailendarConfig as KailendarProps };
 
@@ -18,7 +19,7 @@ export default function Kailendar({
   getEvents = () => [],
 }: KailendarConfig) {
   return (
-    <div>
+    <div className={styles.kailendar}>
       {showHeader && (
         <CommonHeader
           view={view}
