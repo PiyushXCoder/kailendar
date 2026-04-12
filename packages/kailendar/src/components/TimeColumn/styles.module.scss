@@ -1,0 +1,16 @@
+.timeColumn {
+  width: 60px;
+  border-right: 1px solid #e0e0e0;
+  background: #fafafa;
+
+  .timeLabel {
+    height: 60px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-right: 8px;
+    font-size: 11px;
+    color: #666;
+    transform: translateY(-6px);
+  }
+}

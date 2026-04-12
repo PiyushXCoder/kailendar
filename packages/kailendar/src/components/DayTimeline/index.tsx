@@ -9,6 +9,7 @@ import {
   addDays,
 } from "date-fns";
 import styles from "./styles.module.scss";
+import TimeColumn from "../TimeColumn";
 import { Event } from "../../utils/types";
 
 interface DayTimelineProps {
@@ -17,6 +18,8 @@ interface DayTimelineProps {
   onTimeClick?: (time: Date) => void;
   onEventClick?: (event: Event) => void;
   getEvents?: (start: Date, end: Date) => Event[];
+  showDateSwitchButtons?: boolean;
+  showTimeLabels?: boolean;
 }
 
 const HOUR_HEIGHT = 60;
@@ -29,6 +32,8 @@ export default function DayTimeline({
   getEvents,
   onEventClick,
   onTimeClick,
+  showDateSwitchButtons = true,
+  showTimeLabels = true,
 }: DayTimelineProps) {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
@@ -102,27 +107,29 @@ export default function DayTimeline({
     <div className={styles.dayView}>
       <div className={styles.header}>
         <div className={styles.title}>{format(currentDate, "EEE d")}</div>
-        <div className={styles.navigation}>
-          <button
-            className={styles.navButton}
-            onClick={() => {
-              setCurrentDate && setCurrentDate(addDays(currentDate, -1));
-            }}
-          >
-            {"<"}
-          </button>
-          <button className={`${styles.navButton} ${styles.todayButton}`}>
-            {format(currentDate, "EEE d")}
-          </button>
-          <button
-            className={styles.navButton}
-            onClick={() => {
-              setCurrentDate && setCurrentDate(addDays(currentDate, 1));
-            }}
-          >
-            {">"}
-          </button>
-        </div>
+        {showDateSwitchButtons && (
+          <div className={styles.navigation}>
+            <button
+              className={styles.navButton}
+              onClick={() => {
+                setCurrentDate && setCurrentDate(addDays(currentDate, -1));
+              }}
+            >
+              {"<"}
+            </button>
+            <button className={`${styles.navButton} ${styles.todayButton}`}>
+              {format(currentDate, "EEE d")}
+            </button>
+            <button
+              className={styles.navButton}
+              onClick={() => {
+                setCurrentDate && setCurrentDate(addDays(currentDate, 1));
+              }}
+            >
+              {">"}
+            </button>
+          </div>
+        )}
       </div>
       <div
         className={styles.content}
@@ -135,14 +142,7 @@ export default function DayTimeline({
           onTimeClick && onTimeClick(clickedTime);
         }}
       >
-        <div className={styles.timeColumn}>
-          <div key={-1} className={styles.timeLabel}></div>
-          {hours.slice(1).map((hour) => (
-            <div key={hour} className={styles.timeLabel}>
-              {format(new Date().setHours(hour, 0), "h a")}
-            </div>
-          ))}
-        </div>
+        {showTimeLabels && <TimeColumn hours={hours} />}
         <div className={styles.eventsColumn}>
           {hours.map((hour) => (
             <div key={hour} className={styles.hourSlot} />

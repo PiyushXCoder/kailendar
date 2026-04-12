@@ -2,12 +2,25 @@ import MiniMonthView from "./MiniMonthView";
 import type { KailendarConfig } from "../utils/types";
 import YearView from "./YearView";
 import DayView from "./DayView";
+import WeekView from "./WeekView";
 
 export type { KailendarConfig as KailendarProps };
 
 export default function Kailendar(props: KailendarConfig) {
   return (
     <div>
+      <WeekView
+        currentDate={props.currentDate}
+        setCurrentDate={props.setCurrentDate}
+        getEvents={props.getEvents}
+        onEventClick={(event) => {
+          console.log("Clicked event:", event);
+        }}
+        onTimeClick={(time) => {
+          console.log("Clicked time:", time);
+        }}
+      />
+
       <DayView
         currentDate={props.currentDate}
         setCurrentDate={props.setCurrentDate}
