@@ -18,12 +18,14 @@ import { Event } from "../../utils/types";
 
 interface MonthMiniProps {
   currentDate: Date;
-  setCurrentDate: (date: Date) => void;
+  setCurrentDate?: (date: Date) => void;
   showYear?: boolean;
   showHeaderButtons?: boolean;
   showHeader?: boolean;
   onDayClick?: (date: Date) => void;
   getEvents?: (start: Date, end: Date) => Event[];
+  selectedDate?: Date | null;
+  onSelectDate?: (date: Date) => void;
 }
 
 export default function MonthMini({
@@ -34,16 +36,26 @@ export default function MonthMini({
   showYear = true,
   onDayClick,
   getEvents,
+  selectedDate: externalSelectedDate,
+  onSelectDate,
 }: MonthMiniProps) {
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
   const calendarStart = startOfWeek(monthStart);
   const calendarEnd = endOfWeek(monthEnd);
   const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
-  const [selectedDate, setSelectedDate] = useState<Date | null>(currentDate);
+  const [internalSelectedDate, setInternalSelectedDate] = useState<Date | null>(
+    currentDate,
+  );
+  const selectedDate =
+    externalSelectedDate !== undefined
+      ? externalSelectedDate
+      : internalSelectedDate;
 
-  const goToPrevMonth = () => setCurrentDate(subMonths(currentDate, 1));
-  const goToNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+  const goToPrevMonth = () =>
+    setCurrentDate && setCurrentDate(subMonths(currentDate, 1));
+  const goToNextMonth = () =>
+    setCurrentDate && setCurrentDate(addMonths(currentDate, 1));
 
   const events = getEvents ? getEvents(calendarStart, calendarEnd) : [];
 
@@ -93,7 +105,11 @@ export default function MonthMini({
                   : ""
               }`}
               onClick={() => {
-                setSelectedDate(day);
+                if (onSelectDate) {
+                  onSelectDate(day);
+                } else {
+                  setInternalSelectedDate(day);
+                }
                 onDayClick && onDayClick(day);
               }}
             >

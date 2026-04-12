@@ -1,1 +1,1 @@
-export { default as Kailendar, type KailendarProps } from "./Kailendar/";
+export { default as Kailendar, type KailendarConfig as KailendarProps } from "./Kailendar/";
