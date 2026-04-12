@@ -1,6 +1,7 @@
 import { startOfWeek, addDays, format, addWeeks, subWeeks } from "date-fns";
 import DayTimeline from "../../components/DayTimeline";
 import TimeColumn from "../../components/TimeColumn";
+import NextIcon from "../../assets/next.svg";
 import { Event } from "../../utils/types";
 import styles from "./styles.module.scss";
 
@@ -51,13 +52,13 @@ export default function WeekView({
           </div>
           <div className={styles.navigation}>
             <button className={styles.navButton} onClick={goToPrevWeek}>
-              {"<"}
+              <img src={NextIcon} alt="prev" className={styles.navIcon} />
             </button>
             <span className={styles.weekRange}>
               {format(weekStart, "MMM d")} - {format(weekEnd, "MMM d, yyyy")}
             </span>
             <button className={styles.navButton} onClick={goToNextWeek}>
-              {">"}
+              <img src={NextIcon} alt="next" className={styles.navIcon} />
             </button>
           </div>
         </div>

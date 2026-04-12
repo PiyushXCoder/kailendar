@@ -31,6 +31,18 @@
         cursor: pointer;
         padding: 4px 8px;
         border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .navIcon {
+          width: 14px;
+          height: 14px;
+
+          &:first-child {
+            transform: rotate(180deg);
+          }
+        }
 
         &:hover {
           background: #f0f0f0;

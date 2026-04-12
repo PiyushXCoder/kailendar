@@ -11,6 +11,7 @@ import {
 import styles from "./styles.module.scss";
 import TimeColumn from "../TimeColumn";
 import { Event } from "../../utils/types";
+import NextIcon from "../../assets/next.svg";
 
 interface DayTimelineProps {
   currentDate: Date;
@@ -118,7 +119,7 @@ export default function DayTimeline({
                   setCurrentDate && setCurrentDate(addDays(currentDate, -1));
                 }}
               >
-                {"<"}
+                <img src={NextIcon} alt="prev" className={styles.navIcon} />
               </button>
               <button className={`${styles.navButton} ${styles.todayButton}`}>
                 {format(currentDate, "EEE d")}
@@ -129,7 +130,7 @@ export default function DayTimeline({
                   setCurrentDate && setCurrentDate(addDays(currentDate, 1));
                 }}
               >
-                {">"}
+                <img src={NextIcon} alt="next" className={`${styles.navIcon} ${styles.nextIcon}`} />
               </button>
             </div>
           )}
