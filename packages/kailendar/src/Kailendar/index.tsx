@@ -1,5 +1,6 @@
 import MiniMonthView from "./MiniMonthView";
 import type { KailendarConfig } from "../utils/types";
+import { KAILENDAR_VIEWS } from "../utils/constants";
 import YearView from "./YearView";
 import DayView from "./DayView";
 import WeekView from "./WeekView";
@@ -8,78 +9,92 @@ import CommonHeader from "../components/CommonHeader";
 
 export type { KailendarConfig as KailendarProps };
 
-export default function Kailendar(props: KailendarConfig) {
+export default function Kailendar({
+  view,
+  setView,
+  showHeader = true,
+  currentDate,
+  setCurrentDate,
+  getEvents = () => [],
+}: KailendarConfig) {
   return (
     <div>
-      {props.showHeader && (
+      {showHeader && (
         <CommonHeader
-          view={props.view}
-          setView={props.setView}
-          currentDate={props.currentDate}
-          setCurrentDate={props.setCurrentDate}
+          view={view}
+          setView={setView}
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
         />
       )}
 
-      <MonthView
-        currentDate={props.currentDate}
-        getEvents={props.getEvents}
-        onEventClick={(event) => {
-          console.log("Clicked event:", event);
-        }}
-        onDayClick={(date) => {
-          console.log("Clicked day:", date);
-        }}
-      />
+      {view === KAILENDAR_VIEWS.MONTH && (
+        <MonthView
+          currentDate={currentDate}
+          getEvents={getEvents}
+          onEventClick={(event) => {
+            console.log("Clicked event:", event);
+          }}
+          onDayClick={(date) => {
+            console.log("Clicked day:", date);
+          }}
+        />
+      )}
 
-      <WeekView
-        currentDate={props.currentDate}
-        setCurrentDate={props.setCurrentDate}
-        getEvents={props.getEvents}
-        showHeader={false}
-        onEventClick={(event) => {
-          console.log("Clicked event:", event);
-        }}
-        onTimeClick={(time) => {
-          console.log("Clicked time:", time);
-        }}
-      />
+      {view === KAILENDAR_VIEWS.WEEK && (
+        <WeekView
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
+          getEvents={getEvents}
+          showHeader={false}
+          onEventClick={(event) => {
+            console.log("Clicked event:", event);
+          }}
+          onTimeClick={(time) => {
+            console.log("Clicked time:", time);
+          }}
+        />
+      )}
 
-      <DayView
-        currentDate={props.currentDate}
-        setCurrentDate={props.setCurrentDate}
-        getEvents={props.getEvents}
-        onTimeClick={(time) => {
-          console.log("Clicked time:", time);
-        }}
-        onEventClick={(event) => {
-          console.log("Clicked event:", event);
-        }}
-      />
+      {view === KAILENDAR_VIEWS.DAY && (
+        <DayView
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
+          getEvents={getEvents}
+          showHeader={false}
+          onTimeClick={(time) => {
+            console.log("Clicked time:", time);
+          }}
+          onEventClick={(event) => {
+            console.log("Clicked event:", event);
+          }}
+        />
+      )}
 
-      {/* {props.view === "year" && ( */}
-      <YearView
-        currentDate={props.currentDate}
-        onDayClick={(date) => {
-          console.log("Clicked date:", date);
-        }}
-        getEvents={props.getEvents}
-        selectedDate={props.currentDate}
-        onSelectDate={props.setCurrentDate}
-      />
-      {/* )} */}
+      {view === KAILENDAR_VIEWS.YEAR && (
+        <YearView
+          currentDate={currentDate}
+          onDayClick={(date) => {
+            console.log("Clicked date:", date);
+          }}
+          getEvents={getEvents}
+          selectedDate={currentDate}
+          onSelectDate={setCurrentDate}
+        />
+      )}
 
-      {/* {props.view === "month-mini" && ( */}
-      <MiniMonthView
-        currentDate={props.currentDate}
-        setCurrentDate={props.setCurrentDate}
-        onDayClick={(date) => {
-          console.log("Clicked date:", date);
-        }}
-        getEvents={props.getEvents}
-        selectedDate={props.currentDate}
-        onSelectDate={props.setCurrentDate}
-      />
-      {/* )} */}
+      {view === KAILENDAR_VIEWS.MONTH_MINI && (
+        <MiniMonthView
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
+          onDayClick={(date) => {
+            console.log("Clicked date:", date);
+          }}
+          getEvents={getEvents}
+          selectedDate={currentDate}
+          onSelectDate={setCurrentDate}
+        />
+      )}
     </div>
   );
 }

@@ -53,6 +53,8 @@
 
   .timeColumnWrapper {
     flex-shrink: 0;
+    padding-top: calc(2 * 12px + 35px);
+    /* header padding + border */
   }
 
   .grid {

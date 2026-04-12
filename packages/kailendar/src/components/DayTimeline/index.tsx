@@ -20,6 +20,7 @@ interface DayTimelineProps {
   getEvents?: (start: Date, end: Date) => Event[];
   showDateSwitchButtons?: boolean;
   showTimeLabels?: boolean;
+  showHeader?: boolean;
 }
 
 const HOUR_HEIGHT = 60;
@@ -34,6 +35,7 @@ export default function DayTimeline({
   onTimeClick,
   showDateSwitchButtons = true,
   showTimeLabels = true,
+  showHeader = true,
 }: DayTimelineProps) {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
@@ -105,32 +107,34 @@ export default function DayTimeline({
 
   return (
     <div className={styles.dayView}>
-      <div className={styles.header}>
-        <div className={styles.title}>{format(currentDate, "EEE d")}</div>
-        {showDateSwitchButtons && (
-          <div className={styles.navigation}>
-            <button
-              className={styles.navButton}
-              onClick={() => {
-                setCurrentDate && setCurrentDate(addDays(currentDate, -1));
-              }}
-            >
-              {"<"}
-            </button>
-            <button className={`${styles.navButton} ${styles.todayButton}`}>
-              {format(currentDate, "EEE d")}
-            </button>
-            <button
-              className={styles.navButton}
-              onClick={() => {
-                setCurrentDate && setCurrentDate(addDays(currentDate, 1));
-              }}
-            >
-              {">"}
-            </button>
-          </div>
-        )}
-      </div>
+      {showHeader && (
+        <div className={styles.header}>
+          <div className={styles.title}>{format(currentDate, "EEE d")}</div>
+          {showDateSwitchButtons && (
+            <div className={styles.navigation}>
+              <button
+                className={styles.navButton}
+                onClick={() => {
+                  setCurrentDate && setCurrentDate(addDays(currentDate, -1));
+                }}
+              >
+                {"<"}
+              </button>
+              <button className={`${styles.navButton} ${styles.todayButton}`}>
+                {format(currentDate, "EEE d")}
+              </button>
+              <button
+                className={styles.navButton}
+                onClick={() => {
+                  setCurrentDate && setCurrentDate(addDays(currentDate, 1));
+                }}
+              >
+                {">"}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       <div
         className={styles.content}
         onClick={(e) => {

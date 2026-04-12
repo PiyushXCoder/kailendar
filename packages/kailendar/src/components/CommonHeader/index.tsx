@@ -79,6 +79,8 @@ export default function CommonHeader({
     <div className={styles.header}>
       <div className={styles.left}>
         <div className={styles.title}>{getTitle()}</div>
+      </div>
+      <div className={styles.navigation}>
         <select
           className={styles.viewSelector}
           value={view}
@@ -92,8 +94,6 @@ export default function CommonHeader({
             </option>
           ))}
         </select>
-      </div>
-      <div className={styles.navigation}>
         <button className={styles.navButton} onClick={goToPrev}>
           {"<"}
         </button>

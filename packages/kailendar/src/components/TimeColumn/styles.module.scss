@@ -4,7 +4,8 @@
   background: #fafafa;
 
   .timeLabel {
-    height: 60px;
+    /* height of hour + border */
+    height: 60.556px;
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
