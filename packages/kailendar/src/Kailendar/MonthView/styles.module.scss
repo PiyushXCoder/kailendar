@@ -1,0 +1,107 @@
+.monthView {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+
+  .header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid #e0e0e0;
+
+    .dayHeader {
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+    }
+  }
+
+  .grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+
+    .dayCell {
+      aspect-ratio: 1/1;
+      border-right: 1px solid #f0f0f0;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 4px;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+
+      &:nth-child(7n) {
+        border-right: none;
+      }
+
+      &:hover {
+        background: #fafafa;
+      }
+
+      &.otherMonth {
+        background: #f9f9f9;
+
+        .dayNumber {
+          color: #ccc;
+        }
+      }
+
+      &.today {
+        .dayNumber {
+          background: #007bff;
+          color: #fff;
+          border-radius: 50%;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      .dayNumber {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+
+      .events {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .event {
+          padding: 2px 6px;
+          border-radius: 3px;
+          font-size: 11px;
+          color: #fff;
+          cursor: pointer;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          &:hover {
+            opacity: 0.9;
+          }
+
+          .eventTitle {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .moreEvents {
+          font-size: 10px;
+          color: #666;
+          padding: 2px 4px;
+        }
+      }
+    }
+  }
+}
