@@ -1,12 +1,14 @@
-export const KAILENDAR_VIEWS = [
-  "year",
-  "month",
-  "month-mini",
-  "week",
-  "day",
-] as const;
+export enum KAILENDAR_VIEWS {
+  YEAR = "year",
+  MONTH = "month",
+  MONTH_MINI = "month-mini",
+  WEEK = "week",
+  DAY = "day",
+}
 
-export type KailendarView = (typeof KAILENDAR_VIEWS)[number];
+export const KAILENDAR_VIEWS_ARR = Object.values(KAILENDAR_VIEWS);
+
+export type KailendarView = (typeof KAILENDAR_VIEWS_ARR)[number];
 
 export const DAYS_OF_WEEK = [
   "Sun",

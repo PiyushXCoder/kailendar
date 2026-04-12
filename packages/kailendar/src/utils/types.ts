@@ -13,7 +13,8 @@ export interface Event {
 
 export interface KailendarConfig {
   view: KailendarView;
-  setView?: (view: KailendarView) => void;
+  setView: (view: KailendarView) => void;
+  showHeader?: boolean;
   currentDate: Date;
   setCurrentDate: (date: Date) => void;
   getEvents?: (start: Date, end: Date) => Event[];

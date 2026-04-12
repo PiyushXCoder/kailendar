@@ -4,12 +4,22 @@ import YearView from "./YearView";
 import DayView from "./DayView";
 import WeekView from "./WeekView";
 import MonthView from "./MonthView";
+import CommonHeader from "../components/CommonHeader";
 
 export type { KailendarConfig as KailendarProps };
 
 export default function Kailendar(props: KailendarConfig) {
   return (
     <div>
+      {props.showHeader && (
+        <CommonHeader
+          view={props.view}
+          setView={props.setView}
+          currentDate={props.currentDate}
+          setCurrentDate={props.setCurrentDate}
+        />
+      )}
+
       <MonthView
         currentDate={props.currentDate}
         getEvents={props.getEvents}

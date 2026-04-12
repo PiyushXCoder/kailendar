@@ -1,7 +1,14 @@
 import { Kailendar, type Event } from "kailendar";
 import { useState } from "react";
 
-const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"];
+const colors = [
+  "#3b82f6",
+  "#10b981",
+  "#f59e0b",
+  "#ef4444",
+  "#8b5cf6",
+  "#ec4899",
+];
 
 const mockEvents: Event[] = [
   ...Array.from({ length: 30 }, (_, i) => ({
@@ -50,17 +57,19 @@ const mockEvents: Event[] = [
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [view, setView] = useState("month-mini");
 
   const getEvents = (start: Date, end: Date): Event[] => {
     return mockEvents.filter(
-      (event) => event.start >= start && event.start <= end
+      (event) => event.start >= start && event.start <= end,
     );
   };
 
   return (
     <div>
       <Kailendar
-        view="month-mini"
+        view={view}
+        setView={setView}
         currentDate={currentDate}
         setCurrentDate={setCurrentDate}
         getEvents={getEvents}
