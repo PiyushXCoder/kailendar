@@ -96,6 +96,17 @@
           }
         }
 
+        .ghostEvent {
+          opacity: 0.75;
+          background-image: repeating-linear-gradient(
+            135deg,
+            transparent,
+            transparent 4px,
+            rgba(255, 255, 255, 0.2) 4px,
+            rgba(255, 255, 255, 0.2) 8px
+          );
+        }
+
         .moreEvents {
           font-size: 10px;
           color: #666;

@@ -25,6 +25,7 @@ interface MonthMiniProps {
   showHeader?: boolean;
   onDayClick?: (date: Date) => void;
   getEvents?: (start: Date, end: Date) => Event[];
+  ghostEvent?: Event;
   selectedDate?: Date | null;
   onSelectDate?: (date: Date) => void;
 }
@@ -37,6 +38,7 @@ export default function MonthMini({
   showYear = true,
   onDayClick,
   getEvents,
+  ghostEvent,
   selectedDate: externalSelectedDate,
   onSelectDate,
 }: MonthMiniProps) {
@@ -95,6 +97,7 @@ export default function MonthMini({
         ))}
         {days.map((day, index) => {
           const dayEvents = getDayEvents(day);
+          const hasGhostEvent = ghostEvent && isSameDay(ghostEvent.start, day);
           return (
             <div
               key={index}
@@ -115,9 +118,9 @@ export default function MonthMini({
               }}
             >
               <span>{format(day, "d")}</span>
-              {dayEvents.length > 0 && (
+              {(dayEvents.length > 0 || hasGhostEvent) && (
                 <div className={styles.eventDots}>
-                  {dayEvents.slice(0, 3).map((event, i) => (
+                  {dayEvents.slice(0, hasGhostEvent ? 2 : 3).map((event, i) => (
                     <span
                       key={i}
                       className={styles.eventDot}
@@ -126,6 +129,15 @@ export default function MonthMini({
                       }}
                     />
                   ))}
+                  {hasGhostEvent && (
+                    <span
+                      key="ghost"
+                      className={`${styles.eventDot} ${styles.ghostDot}`}
+                      style={{
+                        backgroundColor: ghostEvent!.color || "#007bff",
+                      }}
+                    />
+                  )}
                 </div>
               )}
             </div>

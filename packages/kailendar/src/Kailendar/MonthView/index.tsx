@@ -16,6 +16,7 @@ import styles from "./styles.module.scss";
 interface MonthViewProps {
   currentDate: Date;
   getEvents?: (start: Date, end: Date) => Event[];
+  ghostEvent?: Event;
   onEventClick?: (event: Event) => void;
   onDayClick?: (date: Date) => void;
 }
@@ -25,6 +26,7 @@ const WEEK_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export default function MonthView({
   currentDate,
   getEvents,
+  ghostEvent,
   onEventClick,
   onDayClick,
 }: MonthViewProps) {
@@ -39,10 +41,16 @@ export default function MonthView({
     return getEvents(calendarStart, calendarEnd);
   }, [getEvents, calendarStart, calendarEnd]);
 
-  const getDayEvents = (day: Date) =>
-    events
+  const getDayEvents = (day: Date) => {
+    const dayEvents = events
       .filter((e) => isSameDay(e.start, day))
       .sort((a, b) => a.start.getTime() - b.start.getTime());
+    
+    if (ghostEvent && isSameDay(ghostEvent.start, day)) {
+      return [...dayEvents, { ...ghostEvent, id: `ghost-${ghostEvent.id}` }];
+    }
+    return dayEvents;
+  };
 
   return (
     <div className={styles.monthView}>
@@ -56,6 +64,8 @@ export default function MonthView({
       <div className={styles.grid}>
         {days.map((day) => {
           const dayEvents = getDayEvents(day);
+          const ghostEventForDay = ghostEvent && isSameDay(ghostEvent.start, day) ? ghostEvent : null;
+          const regularEvents = dayEvents.filter(e => !e.id.startsWith('ghost-'));
           const isCurrentMonth = isSameMonth(day, currentDate);
           const isCurrentDay = isToday(day);
 
@@ -67,7 +77,7 @@ export default function MonthView({
             >
               <div className={styles.dayNumber}>{format(day, "d")}</div>
               <div className={styles.events}>
-                {dayEvents.slice(0, 3).map((event) => (
+                {regularEvents.slice(0, ghostEventForDay ? 2 : 3).map((event) => (
                   <div
                     key={event.id}
                     className={styles.event}
@@ -80,9 +90,22 @@ export default function MonthView({
                     <span className={styles.eventTitle}>{event.title}</span>
                   </div>
                 ))}
-                {dayEvents.length > 3 && (
+                {ghostEventForDay && (
+                  <div
+                    key={`ghost-${ghostEventForDay.id}`}
+                    className={`${styles.event} ${styles.ghostEvent}`}
+                    style={{ backgroundColor: ghostEventForDay.color || "#007bff" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEventClick && onEventClick(ghostEventForDay);
+                    }}
+                  >
+                    <span className={styles.eventTitle}>{ghostEventForDay.title}</span>
+                  </div>
+                )}
+                {regularEvents.length > (ghostEventForDay ? 2 : 3) && (
                   <div className={styles.moreEvents}>
-                    +{dayEvents.length - 3} more
+                    +{regularEvents.length - (ghostEventForDay ? 2 : 3)} more
                   </div>
                 )}
               </div>

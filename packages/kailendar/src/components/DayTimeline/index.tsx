@@ -19,6 +19,7 @@ interface DayTimelineProps {
   onTimeClick?: (time: Date) => void;
   onEventClick?: (event: Event) => void;
   getEvents?: (start: Date, end: Date) => Event[];
+  ghostEvent?: Event;
   showDateSwitchButtons?: boolean;
   showTimeLabels?: boolean;
   showHeader?: boolean;
@@ -32,6 +33,7 @@ export default function DayTimeline({
   currentDate,
   setCurrentDate,
   getEvents,
+  ghostEvent,
   onEventClick,
   onTimeClick,
   showDateSwitchButtons = true,
@@ -54,16 +56,21 @@ export default function DayTimeline({
     : -1;
 
   const events = getEvents ? getEvents(dayStart, dayEnd) : [];
-  const dayEvents = useMemo(
-    () => events.filter((e) => isSameDay(e.start, currentDate)),
-    [events, currentDate],
-  );
+const dayEvents = useMemo(
+  () => events.filter((e) => isSameDay(e.start, currentDate)),
+  [events, currentDate],
+);
 
-  const eventPositions = useMemo(() => {
-    const sorted = [...dayEvents].sort(
-      (a, b) => a.start.getTime() - b.start.getTime(),
-    );
-    const columns: Event[][] = [];
+const ghostEventForDay = ghostEvent && isSameDay(ghostEvent.start, currentDate) ? ghostEvent : null;
+
+const eventPositions = useMemo(() => {
+  const allEvents = ghostEventForDay
+    ? [...dayEvents, { ...ghostEventForDay, id: `ghost-${ghostEventForDay.id}` }]
+    : dayEvents;
+  const sorted = [...allEvents].sort(
+    (a, b) => a.start.getTime() - b.start.getTime(),
+  );
+  const columns: Event[][] = [];
 
     for (const event of sorted) {
       let placed = false;
@@ -152,26 +159,30 @@ export default function DayTimeline({
           {hours.map((hour) => (
             <div key={hour} className={styles.hourSlot} />
           ))}
-          {eventPositions.map(({ event, width, left, top, height }) => (
-            <div
-              key={event.id}
-              className={styles.event}
-              style={{
-                top: `${top}px`,
-                height: `${height}px`,
-                width: `calc(${width}% - 20px)`,
-                left: `calc(${left}% + 4px)`,
-                backgroundColor: event.color || "#007bff",
-                color: "#fff",
-              }}
-              onClick={() => onEventClick && onEventClick(event)}
-            >
-              <div className={styles.eventTitle}>{event.title}</div>
-              <div className={styles.eventTime}>
-                {format(event.start, "h:mm a")} - {format(event.end, "h:mm a")}
+          {eventPositions.map(({ event, width, left, top, height }) => {
+            const isGhost = event.id.startsWith('ghost-');
+            const displayEvent = isGhost && ghostEventForDay ? ghostEventForDay : event;
+            return (
+              <div
+                key={event.id}
+                className={`${styles.event} ${isGhost ? styles.ghostEvent : ''}`}
+                style={{
+                  top: `${top}px`,
+                  height: `${height}px`,
+                  width: `calc(${width}% - 20px)`,
+                  left: `calc(${left}% + 4px)`,
+                  backgroundColor: displayEvent.color || "#007bff",
+                  color: "#fff",
+                }}
+                onClick={() => onEventClick && onEventClick(displayEvent)}
+              >
+                <div className={styles.eventTitle}>{displayEvent.title}</div>
+                <div className={styles.eventTime}>
+                  {format(displayEvent.start, "h:mm a")} - {format(displayEvent.end, "h:mm a")}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           {isCurrentDay && currentTimeTop >= 0 && (
             <div
               className={styles.currentTimeLine}

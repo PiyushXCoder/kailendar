@@ -19,4 +19,5 @@ export interface KailendarConfig {
   setCurrentDate: (date: Date) => void;
   getEvents?: (start: Date, end: Date) => Event[];
   showViewSwitcher?: boolean;
+  ghostEvent?: Event;
 }

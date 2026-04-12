@@ -10,6 +10,7 @@ interface WeekViewProps {
   setCurrentDate?: (date: Date) => void;
   showHeader?: boolean;
   getEvents?: (start: Date, end: Date) => Event[];
+  ghostEvent?: Event;
   onEventClick?: (event: Event) => void;
   onTimeClick?: (time: Date) => void;
 }
@@ -23,6 +24,7 @@ export default function WeekView({
   setCurrentDate,
   showHeader = true,
   getEvents,
+  ghostEvent,
   onEventClick,
   onTimeClick,
 }: WeekViewProps) {
@@ -73,6 +75,7 @@ export default function WeekView({
               <DayTimeline
                 currentDate={day}
                 getEvents={getEvents}
+                ghostEvent={ghostEvent}
                 onEventClick={onEventClick}
                 onTimeClick={onTimeClick}
                 showDateSwitchButtons={false}

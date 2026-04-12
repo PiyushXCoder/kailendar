@@ -17,6 +17,7 @@ export default function Kailendar({
   currentDate,
   setCurrentDate,
   getEvents = () => [],
+  ghostEvent,
 }: KailendarConfig) {
   return (
     <div className={styles.kailendar}>
@@ -33,6 +34,7 @@ export default function Kailendar({
         <MonthView
           currentDate={currentDate}
           getEvents={getEvents}
+          ghostEvent={ghostEvent}
           onEventClick={(event) => {
             console.log("Clicked event:", event);
           }}
@@ -47,6 +49,7 @@ export default function Kailendar({
           currentDate={currentDate}
           setCurrentDate={setCurrentDate}
           getEvents={getEvents}
+          ghostEvent={ghostEvent}
           showHeader={false}
           onEventClick={(event) => {
             console.log("Clicked event:", event);
@@ -62,6 +65,7 @@ export default function Kailendar({
           currentDate={currentDate}
           setCurrentDate={setCurrentDate}
           getEvents={getEvents}
+          ghostEvent={ghostEvent}
           showHeader={false}
           onTimeClick={(time) => {
             console.log("Clicked time:", time);
@@ -79,6 +83,7 @@ export default function Kailendar({
             console.log("Clicked date:", date);
           }}
           getEvents={getEvents}
+          ghostEvent={ghostEvent}
           selectedDate={currentDate}
           onSelectDate={setCurrentDate}
         />
@@ -92,6 +97,7 @@ export default function Kailendar({
             console.log("Clicked date:", date);
           }}
           getEvents={getEvents}
+          ghostEvent={ghostEvent}
           selectedDate={currentDate}
           onSelectDate={setCurrentDate}
         />

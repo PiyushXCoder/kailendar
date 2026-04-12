@@ -4,6 +4,7 @@ import styles from "./styles.module.scss";
 interface YearViewProps {
   currentDate: Date;
   getEvents?: (start: Date, end: Date) => import("../../utils/types").Event[];
+  ghostEvent?: import("../../utils/types").Event;
   onDayClick?: (date: Date) => void;
   selectedDate?: Date | null;
   onSelectDate?: (date: Date) => void;
@@ -12,6 +13,7 @@ interface YearViewProps {
 export default function YearView({
   currentDate,
   getEvents,
+  ghostEvent,
   onDayClick,
   selectedDate,
   onSelectDate,
@@ -30,6 +32,7 @@ export default function YearView({
           showHeaderButtons={false}
           showYear={true}
           getEvents={getEvents}
+          ghostEvent={ghostEvent}
           onDayClick={onDayClick}
           selectedDate={selectedDate}
           onSelectDate={onSelectDate}

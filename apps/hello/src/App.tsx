@@ -55,6 +55,14 @@ const mockEvents: Event[] = [
   },
 ];
 
+const ghostEvent: Event = {
+  id: "ghost-1",
+  title: "Ghost Event",
+  color: "#94a3b8",
+  start: new Date(2026, 3, 13, 10, 0),
+  end: new Date(2026, 3, 13, 12, 0),
+};
+
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState("month");
@@ -73,6 +81,7 @@ function App() {
         currentDate={currentDate}
         setCurrentDate={setCurrentDate}
         getEvents={getEvents}
+        ghostEvent={ghostEvent}
       />
     </div>
   );
