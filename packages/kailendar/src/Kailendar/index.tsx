@@ -25,6 +25,7 @@ export default function Kailendar(props: KailendarConfig) {
         currentDate={props.currentDate}
         setCurrentDate={props.setCurrentDate}
         getEvents={props.getEvents}
+        showHeader={false}
         onEventClick={(event) => {
           console.log("Clicked event:", event);
         }}

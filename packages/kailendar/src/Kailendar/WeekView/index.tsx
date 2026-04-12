@@ -7,6 +7,7 @@ import styles from "./styles.module.scss";
 interface WeekViewProps {
   currentDate: Date;
   setCurrentDate?: (date: Date) => void;
+  showHeader?: boolean;
   getEvents?: (start: Date, end: Date) => Event[];
   onEventClick?: (event: Event) => void;
   onTimeClick?: (time: Date) => void;
@@ -19,6 +20,7 @@ const END_HOUR = 24;
 export default function WeekView({
   currentDate,
   setCurrentDate,
+  showHeader = true,
   getEvents,
   onEventClick,
   onTimeClick,
@@ -28,31 +30,38 @@ export default function WeekView({
   const days = Array.from({ length: DAYS_IN_WEEK }, (_, i) =>
     addDays(weekStart, i),
   );
-  const hours = Array.from({ length: END_HOUR - START_HOUR }, (_, i) => START_HOUR + i);
+  const hours = Array.from(
+    { length: END_HOUR - START_HOUR },
+    (_, i) => START_HOUR + i,
+  );
 
-  const goToPrevWeek = () => setCurrentDate && setCurrentDate(subWeeks(currentDate, 1));
-  const goToNextWeek = () => setCurrentDate && setCurrentDate(addWeeks(currentDate, 1));
+  const goToPrevWeek = () =>
+    setCurrentDate && setCurrentDate(subWeeks(currentDate, 1));
+  const goToNextWeek = () =>
+    setCurrentDate && setCurrentDate(addWeeks(currentDate, 1));
 
   return (
     <div className={styles.weekView}>
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <span className={styles.monthYear}>
-            {format(weekStart, "MMMM yyyy")}
-          </span>
+      {showHeader && (
+        <div className={styles.header}>
+          <div className={styles.headerLeft}>
+            <span className={styles.monthYear}>
+              {format(weekStart, "MMMM yyyy")}
+            </span>
+          </div>
+          <div className={styles.navigation}>
+            <button className={styles.navButton} onClick={goToPrevWeek}>
+              {"<"}
+            </button>
+            <span className={styles.weekRange}>
+              {format(weekStart, "MMM d")} - {format(weekEnd, "MMM d, yyyy")}
+            </span>
+            <button className={styles.navButton} onClick={goToNextWeek}>
+              {">"}
+            </button>
+          </div>
         </div>
-        <div className={styles.navigation}>
-          <button className={styles.navButton} onClick={goToPrevWeek}>
-            {"<"}
-          </button>
-          <span className={styles.weekRange}>
-            {format(weekStart, "MMM d")} - {format(weekEnd, "MMM d, yyyy")}
-          </span>
-          <button className={styles.navButton} onClick={goToNextWeek}>
-            {">"}
-          </button>
-        </div>
-      </div>
+      )}
       <div className={styles.content}>
         <div className={styles.timeColumnWrapper}>
           <TimeColumn hours={hours} />
