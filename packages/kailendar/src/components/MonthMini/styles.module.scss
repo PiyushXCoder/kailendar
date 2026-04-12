@@ -1,0 +1,92 @@
+.monthMini {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+
+    .headerText {
+      display: flex;
+      gap: 8px;
+
+      .month {
+        font-weight: 600;
+      }
+
+      .year {
+        color: #666;
+      }
+    }
+
+    .headerButtons {
+      display: flex;
+      gap: 4px;
+
+      .headerButton {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 4px;
+
+        &:hover {
+          background: #f0f0f0;
+        }
+      }
+    }
+  }
+
+  .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    padding: 8px;
+
+    .day {
+      position: relative;
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background: #f0f0f0;
+      }
+
+      &.today {
+        background: #f0f0f0;
+        font-weight: 600;
+      }
+
+      &.selected {
+        background: #cfe5ff;
+      }
+
+      &.otherMonth {
+        color: #ccc;
+      }
+    }
+
+    .eventDots {
+      display: flex;
+      gap: 2px;
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      .eventDot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+      }
+    }
+  }
+}

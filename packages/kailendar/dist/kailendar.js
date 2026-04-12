@@ -1,6 +1,5 @@
-(function(){try{if(typeof document<`u`){var e=document.createElement(`style`);e.appendChild(document.createTextNode(`._kailendarBtn_unlcp_1{cursor:pointer;background-color:#007bff;border:none;border-radius:4px;padding:8px 16px;font-size:14px}
-/*$vite$:1*/`)),document.head.appendChild(e)}}catch(e){console.error(`vite-plugin-css-injected-by-js`,e)}})();//#region \0rolldown/runtime.js
-var e = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports), t = { kailendarBtn: "_kailendarBtn_unlcp_1" }, n = /* @__PURE__ */ e(((e) => {
+//#region \0rolldown/runtime.js
+var e = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports), t = /* @__PURE__ */ e(((e) => {
 	var t = Symbol.for("react.transitional.element"), n = Symbol.for("react.fragment");
 	function r(e, n, r) {
 		var i = null;
@@ -15,7 +14,7 @@ var e = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports), t
 		};
 	}
 	e.Fragment = n, e.jsx = r, e.jsxs = r;
-})), r = /* @__PURE__ */ e(((e) => {
+})), n = /* @__PURE__ */ e(((e) => {
 	var t = Symbol.for("react.transitional.element"), n = Symbol.for("react.portal"), r = Symbol.for("react.fragment"), i = Symbol.for("react.strict_mode"), a = Symbol.for("react.profiler"), o = Symbol.for("react.consumer"), s = Symbol.for("react.context"), c = Symbol.for("react.forward_ref"), l = Symbol.for("react.suspense"), u = Symbol.for("react.memo"), d = Symbol.for("react.lazy"), f = Symbol.for("react.activity"), p = Symbol.iterator;
 	function m(e) {
 		return typeof e != "object" || !e ? null : (e = p && e[p] || e["@@iterator"], typeof e == "function" ? e : null);
@@ -301,7 +300,7 @@ var e = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports), t
 	}, e.useTransition = function() {
 		return w.H.useTransition();
 	}, e.version = "19.2.5";
-})), i = /* @__PURE__ */ e(((e, t) => {
+})), r = /* @__PURE__ */ e(((e, t) => {
 	process.env.NODE_ENV !== "production" && (function() {
 		function n(e, t) {
 			Object.defineProperty(a.prototype, e, { get: function() {
@@ -916,9 +915,9 @@ var e = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports), t
 			return O().useTransition();
 		}, e.version = "19.2.5", typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ < "u" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop == "function" && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 	})();
-})), a = /* @__PURE__ */ e(((e, t) => {
-	process.env.NODE_ENV === "production" ? t.exports = r() : t.exports = i();
-})), o = /* @__PURE__ */ e(((e) => {
+})), i = /* @__PURE__ */ e(((e, t) => {
+	process.env.NODE_ENV === "production" ? t.exports = n() : t.exports = r();
+})), a = /* @__PURE__ */ e(((e) => {
 	process.env.NODE_ENV !== "production" && (function() {
 		function t(e) {
 			if (e == null) return null;
@@ -964,7 +963,7 @@ var e = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports), t
 				return r.call(t, "The provided key is an unsupported type %s. This value must be coerced to a string before using it here.", i), n(e);
 			}
 		}
-		function i(e) {
+		function a(e) {
 			if (e === v) return "<>";
 			if (typeof e == "object" && e && e.$$typeof === D) return "<...>";
 			try {
@@ -1061,30 +1060,26 @@ var e = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports), t
 		function m(e) {
 			return typeof e == "object" && !!e && e.$$typeof === g;
 		}
-		var h = a(), g = Symbol.for("react.transitional.element"), _ = Symbol.for("react.portal"), v = Symbol.for("react.fragment"), y = Symbol.for("react.strict_mode"), b = Symbol.for("react.profiler"), x = Symbol.for("react.consumer"), S = Symbol.for("react.context"), C = Symbol.for("react.forward_ref"), w = Symbol.for("react.suspense"), T = Symbol.for("react.suspense_list"), E = Symbol.for("react.memo"), D = Symbol.for("react.lazy"), O = Symbol.for("react.activity"), k = Symbol.for("react.client.reference"), A = h.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, j = Object.prototype.hasOwnProperty, M = Array.isArray, N = console.createTask ? console.createTask : function() {
+		var h = i(), g = Symbol.for("react.transitional.element"), _ = Symbol.for("react.portal"), v = Symbol.for("react.fragment"), y = Symbol.for("react.strict_mode"), b = Symbol.for("react.profiler"), x = Symbol.for("react.consumer"), S = Symbol.for("react.context"), C = Symbol.for("react.forward_ref"), w = Symbol.for("react.suspense"), T = Symbol.for("react.suspense_list"), E = Symbol.for("react.memo"), D = Symbol.for("react.lazy"), O = Symbol.for("react.activity"), k = Symbol.for("react.client.reference"), A = h.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, j = Object.prototype.hasOwnProperty, M = Array.isArray, N = console.createTask ? console.createTask : function() {
 			return null;
 		};
 		h = { react_stack_bottom_frame: function(e) {
 			return e();
 		} };
-		var P, F = {}, I = h.react_stack_bottom_frame.bind(h, s)(), L = N(i(s)), R = {};
+		var P, F = {}, I = h.react_stack_bottom_frame.bind(h, s)(), L = N(a(s)), R = {};
 		e.Fragment = v, e.jsx = function(e, t, n) {
 			var r = 1e4 > A.recentlyCreatedOwnerStacks++;
-			return f(e, t, n, !1, r ? Error("react-stack-top-frame") : I, r ? N(i(e)) : L);
+			return f(e, t, n, !1, r ? Error("react-stack-top-frame") : I, r ? N(a(e)) : L);
 		}, e.jsxs = function(e, t, n) {
 			var r = 1e4 > A.recentlyCreatedOwnerStacks++;
-			return f(e, t, n, !0, r ? Error("react-stack-top-frame") : I, r ? N(i(e)) : L);
+			return f(e, t, n, !0, r ? Error("react-stack-top-frame") : I, r ? N(a(e)) : L);
 		};
 	})();
-})), s = (/* @__PURE__ */ e(((e, t) => {
-	process.env.NODE_ENV === "production" ? t.exports = n() : t.exports = o();
+})), o = (/* @__PURE__ */ e(((e, n) => {
+	process.env.NODE_ENV === "production" ? n.exports = t() : n.exports = a();
 })))();
-function c({ children: e, onClick: n }) {
-	return /* @__PURE__ */ (0, s.jsx)("button", {
-		className: t.kailendarBtn,
-		onClick: n,
-		children: e
-	});
+function s(e) {
+	return /* @__PURE__ */ (0, o.jsx)("div", { children: /* @__PURE__ */ (0, o.jsx)("h1", { children: "Kailendar" }) });
 }
 //#endregion
-export { c as Button };
+export { s as Kailendar };
