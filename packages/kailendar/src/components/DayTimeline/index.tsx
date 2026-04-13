@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   format,
   startOfDay,
@@ -11,7 +11,7 @@ import {
 import styles from "./styles.module.scss";
 import TimeColumn from "../TimeColumn";
 import { Event } from "../../utils/types";
-import NextIcon from "../../assets/next.svg";
+import NextIcon from "../../assets/next.svg?react";
 
 interface DayTimelineProps {
   currentDate: Date;
@@ -60,21 +60,25 @@ export default function DayTimeline({
     : -1;
 
   const events = getEvents ? getEvents(dayStart, dayEnd) : [];
-const dayEvents = useMemo(
-  () => events.filter((e) => isSameDay(e.start, currentDate)),
-  [events, currentDate],
-);
-
-const ghostEventForDay = ghostEvent && isSameDay(ghostEvent.start, currentDate) ? ghostEvent : null;
-
-const eventPositions = useMemo(() => {
-  const allEvents = ghostEventForDay
-    ? [...dayEvents, { ...ghostEventForDay, id: `ghost-${ghostEventForDay.id}` }]
-    : dayEvents;
-  const sorted = [...allEvents].sort(
-    (a, b) => a.start.getTime() - b.start.getTime(),
+  const dayEvents = useMemo(
+    () => events.filter((e) => isSameDay(e.start, currentDate)),
+    [events, currentDate],
   );
-  const columns: Event[][] = [];
+
+  const ghostEventForDay =
+    ghostEvent && isSameDay(ghostEvent.start, currentDate) ? ghostEvent : null;
+
+  const eventPositions = useMemo(() => {
+    const allEvents = ghostEventForDay
+      ? [
+          ...dayEvents,
+          { ...ghostEventForDay, id: `ghost-${ghostEventForDay.id}` },
+        ]
+      : dayEvents;
+    const sorted = [...allEvents].sort(
+      (a, b) => a.start.getTime() - b.start.getTime(),
+    );
+    const columns: Event[][] = [];
 
     for (const event of sorted) {
       let placed = false;
@@ -118,63 +122,61 @@ const eventPositions = useMemo(() => {
   );
 
   return (
+    <div className={styles.dayView} data-scrollable={scrollable}>
+      {showHeader && (
+        <div className={styles.header}>
+          <div className={styles.title}>{format(currentDate, "EEE d")}</div>
+          {showDateSwitchButtons && (
+            <div className={styles.navigation}>
+              <button
+                className={styles.navButton}
+                onClick={() => {
+                  setCurrentDate && setCurrentDate(addDays(currentDate, -1));
+                }}
+              >
+                <NextIcon className={styles.navIcon} />
+              </button>
+              <button className={`${styles.navButton} ${styles.todayButton}`}>
+                {format(currentDate, "EEE d")}
+              </button>
+              <button
+                className={styles.navButton}
+                onClick={() => {
+                  setCurrentDate && setCurrentDate(addDays(currentDate, 1));
+                }}
+              >
+                <NextIcon className={`${styles.navIcon} ${styles.nextIcon}`} />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       <div
-        className={styles.dayView}
-        data-scrollable={scrollable}
+        ref={contentRef}
+        className={styles.content}
+        onClick={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          const scrollTop = e.currentTarget.scrollTop;
+          const clickY = e.clientY - rect.top + scrollTop;
+          const clickedHour = Math.floor(clickY / HOUR_HEIGHT);
+          const clickedTime = new Date(dayStart);
+          clickedTime.setHours(clickedHour, 0, 0, 0);
+          onTimeClick && onTimeClick(clickedTime);
+        }}
       >
-        {showHeader && (
-          <div className={styles.header}>
-            <div className={styles.title}>{format(currentDate, "EEE d")}</div>
-            {showDateSwitchButtons && (
-              <div className={styles.navigation}>
-                <button
-                  className={styles.navButton}
-                  onClick={() => {
-                    setCurrentDate && setCurrentDate(addDays(currentDate, -1));
-                  }}
-                >
-                  <img src={NextIcon} alt="prev" className={styles.navIcon} />
-                </button>
-                <button className={`${styles.navButton} ${styles.todayButton}`}>
-                  {format(currentDate, "EEE d")}
-                </button>
-                <button
-                  className={styles.navButton}
-                  onClick={() => {
-                    setCurrentDate && setCurrentDate(addDays(currentDate, 1));
-                  }}
-                >
-                  <img src={NextIcon} alt="next" className={`${styles.navIcon} ${styles.nextIcon}`} />
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-        <div
-          ref={contentRef}
-          className={styles.content}
-          onClick={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            const scrollTop = e.currentTarget.scrollTop;
-            const clickY = e.clientY - rect.top + scrollTop;
-            const clickedHour = Math.floor(clickY / HOUR_HEIGHT);
-            const clickedTime = new Date(dayStart);
-            clickedTime.setHours(clickedHour, 0, 0, 0);
-            onTimeClick && onTimeClick(clickedTime);
-          }}
-        >
         {showTimeLabels && <TimeColumn hours={hours} />}
         <div className={styles.eventsColumn}>
           {hours.map((hour) => (
             <div key={hour} className={styles.hourSlot} />
           ))}
           {eventPositions.map(({ event, width, left, top, height }) => {
-            const isGhost = event.id.startsWith('ghost-');
-            const displayEvent = isGhost && ghostEventForDay ? ghostEventForDay : event;
+            const isGhost = event.id.startsWith("ghost-");
+            const displayEvent =
+              isGhost && ghostEventForDay ? ghostEventForDay : event;
             return (
               <div
                 key={event.id}
-                className={`${styles.event} ${isGhost ? styles.ghostEvent : ''}`}
+                className={`${styles.event} ${isGhost ? styles.ghostEvent : ""}`}
                 style={{
                   top: `${top}px`,
                   height: `${height}px`,
@@ -187,7 +189,8 @@ const eventPositions = useMemo(() => {
               >
                 <div className={styles.eventTitle}>{displayEvent.title}</div>
                 <div className={styles.eventTime}>
-                  {format(displayEvent.start, "h:mm a")} - {format(displayEvent.end, "h:mm a")}
+                  {format(displayEvent.start, "h:mm a")} -{" "}
+                  {format(displayEvent.end, "h:mm a")}
                 </div>
               </div>
             );

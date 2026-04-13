@@ -1,8 +1,6 @@
 import { startOfWeek, addDays, format, addWeeks, subWeeks } from "date-fns";
-import { useRef, useState, useEffect } from "react";
-import DayTimeline from "../../components/DayTimeline";
-import TimeColumn from "../../components/TimeColumn";
-import NextIcon from "../../assets/next.svg";
+import { useRef } from "react";
+import NextIcon from "../../assets/next.svg?react";
 import { Event } from "../../utils/types";
 import styles from "./styles.module.scss";
 
@@ -64,13 +62,13 @@ export default function WeekView({
           </div>
           <div className={styles.navigation}>
             <button className={styles.navButton} onClick={goToPrevWeek}>
-              <img src={NextIcon} alt="prev" className={styles.navIcon} />
+              <NextIcon className={styles.navIcon} />
             </button>
             <span className={styles.weekRange}>
               {format(weekStart, "MMM d")} - {format(weekEnd, "MMM d, yyyy")}
             </span>
             <button className={styles.navButton} onClick={goToNextWeek}>
-              <img src={NextIcon} alt="next" className={styles.navIcon} />
+              <NextIcon className={styles.navIcon} />
             </button>
           </div>
         </div>
@@ -103,7 +101,8 @@ export default function WeekView({
                       key={hour}
                       className={styles.hourSlot}
                       onClick={(e) => {
-                        const rect = e.currentTarget.parentElement!.getBoundingClientRect();
+                        const rect =
+                          e.currentTarget.parentElement!.getBoundingClientRect();
                         const scrollTop = scrollRef.current?.scrollTop || 0;
                         const clickY = e.clientY - rect.top + scrollTop;
                         const clickedHour = Math.floor(clickY / HOUR_HEIGHT);
@@ -124,10 +123,20 @@ export default function WeekView({
                       return eventDate.toDateString() === day.toDateString();
                     });
 
-                    const ghostEventForDay = ghostEvent && ghostEvent.start.toDateString() === day.toDateString() ? ghostEvent : null;
+                    const ghostEventForDay =
+                      ghostEvent &&
+                      ghostEvent.start.toDateString() === day.toDateString()
+                        ? ghostEvent
+                        : null;
 
                     const allEvents = ghostEventForDay
-                      ? [...dayEvents, { ...ghostEventForDay, id: `ghost-${ghostEventForDay.id}` }]
+                      ? [
+                          ...dayEvents,
+                          {
+                            ...ghostEventForDay,
+                            id: `ghost-${ghostEventForDay.id}`,
+                          },
+                        ]
                       : dayEvents;
 
                     const sorted = [...allEvents].sort(
@@ -139,7 +148,9 @@ export default function WeekView({
                       let placed = false;
                       for (let i = 0; i < columns.length; i++) {
                         const lastInColumn = columns[i][columns[i].length - 1];
-                        if (event.start.getTime() >= lastInColumn.end.getTime()) {
+                        if (
+                          event.start.getTime() >= lastInColumn.end.getTime()
+                        ) {
                           columns[i].push(event);
                           placed = true;
                           break;
@@ -161,18 +172,28 @@ export default function WeekView({
                       const totalColumns = columns.length;
                       const width = 100 / totalColumns;
                       const left = (columnIndex / totalColumns) * 100;
-                      const top = ((event.start.getHours() * 60 + event.start.getMinutes()) / 60) * HOUR_HEIGHT;
+                      const top =
+                        ((event.start.getHours() * 60 +
+                          event.start.getMinutes()) /
+                          60) *
+                        HOUR_HEIGHT;
                       const height = Math.max(
                         30,
-                        ((event.end.getHours() * 60 + event.end.getMinutes() - event.start.getHours() * 60 - event.start.getMinutes()) / 60) * HOUR_HEIGHT,
+                        ((event.end.getHours() * 60 +
+                          event.end.getMinutes() -
+                          event.start.getHours() * 60 -
+                          event.start.getMinutes()) /
+                          60) *
+                          HOUR_HEIGHT,
                       );
-                      const isGhost = event.id.startsWith('ghost-');
-                      const displayEvent = isGhost && ghostEventForDay ? ghostEventForDay : event;
+                      const isGhost = event.id.startsWith("ghost-");
+                      const displayEvent =
+                        isGhost && ghostEventForDay ? ghostEventForDay : event;
 
                       return (
                         <div
                           key={event.id}
-                          className={`${styles.event} ${isGhost ? styles.ghostEvent : ''}`}
+                          className={`${styles.event} ${isGhost ? styles.ghostEvent : ""}`}
                           style={{
                             top: `${top}px`,
                             height: `${height}px`,
@@ -185,7 +206,9 @@ export default function WeekView({
                             onEventClick && onEventClick(displayEvent);
                           }}
                         >
-                          <div className={styles.eventTitle}>{displayEvent.title}</div>
+                          <div className={styles.eventTitle}>
+                            {displayEvent.title}
+                          </div>
                         </div>
                       );
                     });

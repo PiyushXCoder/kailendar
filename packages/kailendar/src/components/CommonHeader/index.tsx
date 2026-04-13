@@ -9,12 +9,9 @@ import {
   subYears,
   addYears,
 } from "date-fns";
-import {
-  KailendarView,
-  KAILENDAR_VIEWS,
-} from "../../utils/constants";
+import { KailendarView, KAILENDAR_VIEWS } from "../../utils/constants";
 import ViewSwitcher from "../ViewSwitcher";
-import NextIcon from "../../assets/next.svg";
+import NextIcon from "../../assets/next.svg?react";
 import styles from "./styles.module.scss";
 
 interface CommonHeaderProps {
@@ -87,13 +84,13 @@ export default function CommonHeader({
           onViewChange={(v) => setView(v as any)}
         />
         <button className={styles.navButton} onClick={goToPrev}>
-          <img src={NextIcon} alt="prev" className={styles.navIcon} />
+          <NextIcon className={styles.navIcon} />
         </button>
         <button className={styles.todayButton} onClick={goToToday}>
           Today
         </button>
         <button className={styles.navButton} onClick={goToNext}>
-          <img src={NextIcon} alt="next" className={`${styles.navIcon} ${styles.nextIcon}`} />
+          <NextIcon className={`${styles.navIcon} ${styles.nextIcon}`} />
         </button>
       </div>
     </div>

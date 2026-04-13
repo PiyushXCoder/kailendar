@@ -13,7 +13,7 @@ import {
 } from "date-fns";
 import styles from "./styles.module.scss";
 import { DAYS_OF_WEEK } from "../../utils/constants";
-import NextIcon from "../../assets/next.svg";
+import NextIcon from "../../assets/next.svg?react";
 import { useState } from "react";
 import { Event } from "../../utils/types";
 
@@ -80,10 +80,10 @@ export default function MonthMini({
           {showHeaderButtons && (
             <div className={styles.headerButtons}>
               <button className={styles.headerButton} onClick={goToPrevMonth}>
-                <img src={NextIcon} alt="prev" className={styles.navIcon} />
+                <NextIcon className={styles.nextIcon} />
               </button>
               <button className={styles.headerButton} onClick={goToNextMonth}>
-                <img src={NextIcon} alt="next" className={styles.navIcon} />
+                <NextIcon className={styles.prevIcon} />
               </button>
             </div>
           )}

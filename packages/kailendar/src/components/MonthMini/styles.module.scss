@@ -35,13 +35,18 @@
         align-items: center;
         justify-content: center;
 
-        .navIcon {
+        .nextIcon,
+        .prevIcon {
           width: 14px;
           height: 14px;
 
           &:first-child {
             transform: rotate(180deg);
           }
+        }
+
+        .prevIcon {
+          rotate: 180deg;
         }
 
         &:hover {
