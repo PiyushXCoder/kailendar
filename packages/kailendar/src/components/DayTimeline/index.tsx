@@ -185,7 +185,11 @@ export default function DayTimeline({
                   backgroundColor: displayEvent.color || "#007bff",
                   color: "#fff",
                 }}
-                onClick={() => onEventClick && onEventClick(displayEvent)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  onEventClick && onEventClick(displayEvent);
+                }}
               >
                 <div className={styles.eventTitle}>{displayEvent.title}</div>
                 <div className={styles.eventTime}>
