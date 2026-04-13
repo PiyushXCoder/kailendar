@@ -20,4 +20,7 @@ export interface KailendarConfig {
   getEvents?: (start: Date, end: Date) => Event[];
   showViewSwitcher?: boolean;
   ghostEvent?: Event;
+  onEventClick?: (event: Event) => void;
+  onTimeClick?: (time: Date) => void;
+  onDayClick?: (date: Date) => void;
 }

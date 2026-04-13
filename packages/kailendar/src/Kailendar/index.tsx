@@ -18,6 +18,9 @@ export default function Kailendar({
   setCurrentDate,
   getEvents = () => [],
   ghostEvent,
+  onEventClick,
+  onTimeClick,
+  onDayClick,
 }: KailendarConfig) {
   return (
     <div className={styles.kailendar}>
@@ -35,12 +38,8 @@ export default function Kailendar({
           currentDate={currentDate}
           getEvents={getEvents}
           ghostEvent={ghostEvent}
-          onEventClick={(event) => {
-            console.log("Clicked event:", event);
-          }}
-          onDayClick={(date) => {
-            console.log("Clicked day:", date);
-          }}
+          onEventClick={onEventClick}
+          onDayClick={onDayClick}
         />
       )}
 
@@ -51,12 +50,8 @@ export default function Kailendar({
           getEvents={getEvents}
           ghostEvent={ghostEvent}
           showHeader={false}
-          onEventClick={(event) => {
-            console.log("Clicked event:", event);
-          }}
-          onTimeClick={(time) => {
-            console.log("Clicked time:", time);
-          }}
+          onEventClick={onEventClick}
+          onTimeClick={onTimeClick}
         />
       )}
 
@@ -67,21 +62,15 @@ export default function Kailendar({
           getEvents={getEvents}
           ghostEvent={ghostEvent}
           showHeader={false}
-          onTimeClick={(time) => {
-            console.log("Clicked time:", time);
-          }}
-          onEventClick={(event) => {
-            console.log("Clicked event:", event);
-          }}
+          onTimeClick={onTimeClick}
+          onEventClick={onEventClick}
         />
       )}
 
       {view === KAILENDAR_VIEWS.YEAR && (
         <YearView
           currentDate={currentDate}
-          onDayClick={(date) => {
-            console.log("Clicked date:", date);
-          }}
+          onDayClick={onDayClick}
           getEvents={getEvents}
           ghostEvent={ghostEvent}
           selectedDate={currentDate}
@@ -93,9 +82,7 @@ export default function Kailendar({
         <MiniMonthView
           currentDate={currentDate}
           setCurrentDate={setCurrentDate}
-          onDayClick={(date) => {
-            console.log("Clicked date:", date);
-          }}
+          onDayClick={onDayClick}
           getEvents={getEvents}
           ghostEvent={ghostEvent}
           selectedDate={currentDate}
