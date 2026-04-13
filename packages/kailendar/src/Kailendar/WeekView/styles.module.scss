@@ -11,6 +11,7 @@
     align-items: center;
     padding: 12px 16px;
     border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0;
 
     .headerLeft {
       .monthYear {
@@ -60,26 +61,137 @@
   .content {
     flex: 1;
     display: flex;
-    overflow: auto;
+    overflow: hidden;
+    min-height: 0;
   }
 
   .timeColumnWrapper {
     flex-shrink: 0;
-    padding-top: calc(2 * 12px + 35px);
-    /* header padding + border */
+    width: 50px;
+    overflow: hidden;
+    border-right: 1px solid #e0e0e0;
+    background: #fafafa;
+  }
+
+  .timeColumn {
+    padding-top: 41px;
+  }
+
+  .timeLabel {
+    height: 60px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-right: 8px;
+    font-size: 11px;
+    color: #666;
+    transform: translateY(-6px);
   }
 
   .grid {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    min-width: 0;
+  }
+
+  .daysHeader {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    height: 100%;
-    flex: 1;
-    gap: 1px;
-    background: #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+  }
 
-    .dayCell {
-      background: #fff;
-      overflow: hidden;
+  .dayHeader {
+    padding: 8px;
+    text-align: center;
+    border-right: 1px solid #f0f0f0;
+
+    &:last-child {
+      border-right: none;
     }
+
+    .dayName {
+      display: block;
+      font-size: 11px;
+      color: #666;
+      text-transform: uppercase;
+    }
+
+    .dayNumber {
+      display: block;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+
+  .daysGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    flex: 1;
+    min-height: 1440px;
+  }
+
+  .dayCell {
+    border-right: 1px solid #f0f0f0;
+    position: relative;
+    overflow: hidden;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .dayTimeline {
+    position: relative;
+    height: 1440px;
+  }
+
+  .hourSlot {
+    height: 60px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.02);
+    }
+  }
+
+  .event {
+    position: absolute;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .eventTitle {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .ghostEvent {
+    opacity: 0.75;
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 4px,
+      rgba(255, 255, 255, 0.2) 4px,
+      rgba(255, 255, 255, 0.2) 8px
+    );
   }
 }

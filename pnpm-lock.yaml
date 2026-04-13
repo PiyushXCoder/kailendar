@@ -10,6 +10,9 @@ importers:
 
   apps/hello:
     dependencies:
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       kailendar:
         specifier: workspace:*
         version: link:../../packages/kailendar

@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import {
   format,
   startOfDay,
@@ -23,6 +23,8 @@ interface DayTimelineProps {
   showDateSwitchButtons?: boolean;
   showTimeLabels?: boolean;
   showHeader?: boolean;
+  scrollable?: boolean;
+  contentRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 const HOUR_HEIGHT = 60;
@@ -39,6 +41,8 @@ export default function DayTimeline({
   showDateSwitchButtons = true,
   showTimeLabels = true,
   showHeader = true,
+  scrollable = true,
+  contentRef,
 }: DayTimelineProps) {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
@@ -114,46 +118,51 @@ const eventPositions = useMemo(() => {
   );
 
   return (
-    <div className={styles.dayView}>
-      {showHeader && (
-        <div className={styles.header}>
-          <div className={styles.title}>{format(currentDate, "EEE d")}</div>
-          {showDateSwitchButtons && (
-            <div className={styles.navigation}>
-              <button
-                className={styles.navButton}
-                onClick={() => {
-                  setCurrentDate && setCurrentDate(addDays(currentDate, -1));
-                }}
-              >
-                <img src={NextIcon} alt="prev" className={styles.navIcon} />
-              </button>
-              <button className={`${styles.navButton} ${styles.todayButton}`}>
-                {format(currentDate, "EEE d")}
-              </button>
-              <button
-                className={styles.navButton}
-                onClick={() => {
-                  setCurrentDate && setCurrentDate(addDays(currentDate, 1));
-                }}
-              >
-                <img src={NextIcon} alt="next" className={`${styles.navIcon} ${styles.nextIcon}`} />
-              </button>
-            </div>
-          )}
-        </div>
-      )}
       <div
-        className={styles.content}
-        onClick={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          const clickY = e.clientY - rect.top;
-          const clickedHour = Math.floor(clickY / HOUR_HEIGHT);
-          const clickedTime = new Date(dayStart);
-          clickedTime.setHours(clickedHour, 0, 0, 0);
-          onTimeClick && onTimeClick(clickedTime);
-        }}
+        className={styles.dayView}
+        data-scrollable={scrollable}
       >
+        {showHeader && (
+          <div className={styles.header}>
+            <div className={styles.title}>{format(currentDate, "EEE d")}</div>
+            {showDateSwitchButtons && (
+              <div className={styles.navigation}>
+                <button
+                  className={styles.navButton}
+                  onClick={() => {
+                    setCurrentDate && setCurrentDate(addDays(currentDate, -1));
+                  }}
+                >
+                  <img src={NextIcon} alt="prev" className={styles.navIcon} />
+                </button>
+                <button className={`${styles.navButton} ${styles.todayButton}`}>
+                  {format(currentDate, "EEE d")}
+                </button>
+                <button
+                  className={styles.navButton}
+                  onClick={() => {
+                    setCurrentDate && setCurrentDate(addDays(currentDate, 1));
+                  }}
+                >
+                  <img src={NextIcon} alt="next" className={`${styles.navIcon} ${styles.nextIcon}`} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+        <div
+          ref={contentRef}
+          className={styles.content}
+          onClick={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const scrollTop = e.currentTarget.scrollTop;
+            const clickY = e.clientY - rect.top + scrollTop;
+            const clickedHour = Math.floor(clickY / HOUR_HEIGHT);
+            const clickedTime = new Date(dayStart);
+            clickedTime.setHours(clickedHour, 0, 0, 0);
+            onTimeClick && onTimeClick(clickedTime);
+          }}
+        >
         {showTimeLabels && <TimeColumn hours={hours} />}
         <div className={styles.eventsColumn}>
           {hours.map((hour) => (
