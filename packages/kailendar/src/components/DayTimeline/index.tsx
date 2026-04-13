@@ -78,32 +78,41 @@ export default function DayTimeline({
     const sorted = [...allEvents].sort(
       (a, b) => a.start.getTime() - b.start.getTime(),
     );
-    const columns: Event[][] = [];
 
-    for (const event of sorted) {
-      let placed = false;
-      for (let i = 0; i < columns.length; i++) {
-        const lastInColumn = columns[i][columns[i].length - 1];
-        if (event.start.getTime() >= lastInColumn.end.getTime()) {
-          columns[i].push(event);
-          placed = true;
+    const maxOverlap = (event: Event) => {
+      let max = 1;
+      for (const other of sorted) {
+        if (other === event) continue;
+        const overlapStart = Math.max(event.start.getTime(), other.start.getTime());
+        const overlapEnd = Math.min(event.end.getTime(), other.end.getTime());
+        if (overlapStart < overlapEnd) {
+          let count = 0;
+          for (const e of sorted) {
+            if (Math.max(event.start.getTime(), e.start.getTime()) < Math.min(event.end.getTime(), e.end.getTime())) {
+              count++;
+            }
+          }
+          max = Math.max(max, count);
           break;
         }
       }
-      if (!placed) {
-        columns.push([event]);
-      }
-    }
+      return max;
+    };
+
+    const getOverlapColumnIndex = (event: Event, totalColumns: number) => {
+      if (totalColumns <= 1) return 0;
+      const overlapping = sorted.filter(
+        (e) =>
+          Math.max(event.start.getTime(), e.start.getTime()) <
+          Math.min(event.end.getTime(), e.end.getTime()),
+      );
+      overlapping.sort((a, b) => a.start.getTime() - b.start.getTime());
+      return overlapping.indexOf(event);
+    };
 
     return sorted.map((event) => {
-      let columnIndex = 0;
-      for (let i = 0; i < columns.length; i++) {
-        if (columns[i].includes(event)) {
-          columnIndex = i;
-          break;
-        }
-      }
-      const totalColumns = columns.length;
+      const totalColumns = maxOverlap(event);
+      const columnIndex = getOverlapColumnIndex(event, totalColumns);
       const width = 100 / totalColumns;
       const left = (columnIndex / totalColumns) * 100;
       const top =
