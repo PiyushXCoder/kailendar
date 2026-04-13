@@ -60,9 +60,14 @@
 
   .content {
     flex: 1;
-    display: flex;
-    overflow: hidden;
+    display: grid;
+    grid-template-columns: 60px repeat(7, 1fr);
+    overflow: auto;
     min-height: 0;
+
+    >div {
+      min-width: 0;
+    }
   }
 
   .timeColumnWrapper {
@@ -186,12 +191,10 @@
 
   .ghostEvent {
     opacity: 0.75;
-    background-image: repeating-linear-gradient(
-      135deg,
-      transparent,
-      transparent 4px,
-      rgba(255, 255, 255, 0.2) 4px,
-      rgba(255, 255, 255, 0.2) 8px
-    );
+    background-image: repeating-linear-gradient(135deg,
+        transparent,
+        transparent 4px,
+        rgba(255, 255, 255, 0.2) 4px,
+        rgba(255, 255, 255, 0.2) 8px);
   }
 }
