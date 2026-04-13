@@ -1,6 +1,5 @@
 .dayView {
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -144,13 +143,11 @@
 
       .ghostEvent {
         opacity: 0.75;
-        background-image: repeating-linear-gradient(
-          135deg,
-          transparent,
-          transparent 4px,
-          rgba(255, 255, 255, 0.2) 4px,
-          rgba(255, 255, 255, 0.2) 8px
-        );
+        background-image: repeating-linear-gradient(135deg,
+            transparent,
+            transparent 4px,
+            rgba(255, 255, 255, 0.2) 4px,
+            rgba(255, 255, 255, 0.2) 8px);
       }
     }
   }

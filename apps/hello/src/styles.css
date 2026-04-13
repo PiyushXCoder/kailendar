@@ -43,6 +43,8 @@ body {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  height: 100vh;
+  max-height: 100vh;
 }
 
 .modal-overlay {
