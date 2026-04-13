@@ -1,4 +1,9 @@
-import { Kailendar, MiniMonthView, type Event, KAILENDAR_VIEWS } from "kailendar";
+import {
+  Kailendar,
+  MiniMonthView,
+  type Event,
+  KAILENDAR_VIEWS,
+} from "kailendar";
 import { useState, useCallback } from "react";
 import { format, addHours, startOfDay } from "date-fns";
 import { colors, generateMockEvents } from "./data";
@@ -25,10 +30,18 @@ function EventModal({
 }: EventModalProps) {
   const [title, setTitle] = useState(event?.title || "");
   const [color, setColor] = useState(event?.color || colors[0]);
-  const [startDate, setStartDate] = useState(event ? format(event.start, "yyyy-MM-dd") : "");
-  const [startTime, setStartTime] = useState(event ? format(event.start, "HH:mm") : "");
-  const [endDate, setEndDate] = useState(event ? format(event.end, "yyyy-MM-dd") : "");
-  const [endTime, setEndTime] = useState(event ? format(event.end, "HH:mm") : "");
+  const [startDate, setStartDate] = useState(
+    event ? format(event.start, "yyyy-MM-dd") : "",
+  );
+  const [startTime, setStartTime] = useState(
+    event ? format(event.start, "HH:mm") : "",
+  );
+  const [endDate, setEndDate] = useState(
+    event ? format(event.end, "yyyy-MM-dd") : "",
+  );
+  const [endTime, setEndTime] = useState(
+    event ? format(event.end, "HH:mm") : "",
+  );
 
   if (!isOpen || !event) return null;
 
@@ -74,7 +87,8 @@ function EventModal({
                   className="color-button"
                   style={{
                     backgroundColor: c,
-                    border: color === c ? "3px solid #000" : "3px solid transparent",
+                    border:
+                      color === c ? "3px solid #000" : "3px solid transparent",
                   }}
                   onClick={() => setColor(c)}
                 />
@@ -147,10 +161,10 @@ function App() {
   const getEvents = useCallback(
     (start: Date, end: Date): Event[] => {
       return events.filter(
-        (event) => event.start >= start && event.start <= end
+        (event) => event.start >= start && event.start <= end,
       );
     },
-    [events]
+    [events],
   );
 
   const handleTimeClick = useCallback((time: Date) => {
@@ -201,12 +215,10 @@ function App() {
         setEvents((prev) => [...prev, newEvent]);
         setGhostEvent(null);
       } else {
-        setEvents((prev) =>
-          prev.map((e) => (e.id === event.id ? event : e))
-        );
+        setEvents((prev) => prev.map((e) => (e.id === event.id ? event : e)));
       }
     },
-    [isNewEvent]
+    [isNewEvent],
   );
 
   const handleDeleteEvent = useCallback((eventId: string) => {
@@ -242,7 +254,7 @@ function App() {
             setIsModalOpen(true);
           }}
         >
-          + Create
+          Create
         </button>
         <MiniMonthView
           currentDate={currentDate}
