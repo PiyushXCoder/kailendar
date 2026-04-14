@@ -23,4 +23,5 @@ export interface KailendarConfig {
   onEventClick?: (event: Event) => void;
   onTimeClick?: (time: Date) => void;
   onDayClick?: (date: Date) => void;
+  onDayDoubleClick?: (date: Date) => void;
 }

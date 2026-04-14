@@ -6,6 +6,7 @@ interface YearViewProps {
   getEvents?: (start: Date, end: Date) => import("../../utils/types").Event[];
   ghostEvent?: import("../../utils/types").Event;
   onDayClick?: (date: Date) => void;
+  onDayDoubleClick?: (date: Date) => void;
   selectedDate?: Date | null;
   onSelectDate?: (date: Date) => void;
 }
@@ -15,6 +16,7 @@ export default function YearView({
   getEvents,
   ghostEvent,
   onDayClick,
+  onDayDoubleClick,
   selectedDate,
   onSelectDate,
 }: YearViewProps) {
@@ -34,6 +36,7 @@ export default function YearView({
           getEvents={getEvents}
           ghostEvent={ghostEvent}
           onDayClick={onDayClick}
+          onDayDoubleClick={onDayDoubleClick}
           selectedDate={selectedDate}
           onSelectDate={onSelectDate}
         />

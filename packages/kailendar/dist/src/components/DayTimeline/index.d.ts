@@ -9,6 +9,8 @@ interface DayTimelineProps {
     showDateSwitchButtons?: boolean;
     showTimeLabels?: boolean;
     showHeader?: boolean;
+    scrollable?: boolean;
+    contentRef?: React.RefObject<HTMLDivElement | null>;
 }
-export default function DayTimeline({ currentDate, setCurrentDate, getEvents, ghostEvent, onEventClick, onTimeClick, showDateSwitchButtons, showTimeLabels, showHeader, }: DayTimelineProps): import("react/jsx-runtime").JSX.Element;
+export default function DayTimeline({ currentDate, setCurrentDate, getEvents, ghostEvent, onEventClick, onTimeClick, showDateSwitchButtons, showTimeLabels, showHeader, scrollable, contentRef, }: DayTimelineProps): import("react/jsx-runtime").JSX.Element;
 export {};

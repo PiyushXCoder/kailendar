@@ -103,20 +103,37 @@
 
         .ghostEvent {
           opacity: 0.75;
-          background-image: repeating-linear-gradient(
-            135deg,
-            transparent,
-            transparent 4px,
-            rgba(255, 255, 255, 0.2) 4px,
-            rgba(255, 255, 255, 0.2) 8px
-          );
+          background-image: repeating-linear-gradient(135deg,
+              transparent,
+              transparent 4px,
+              rgba(255, 255, 255, 0.2) 4px,
+              rgba(255, 255, 255, 0.2) 8px);
         }
 
         .moreEvents {
           font-size: 10px;
           color: #666;
           padding: 2px 4px;
+          cursor: pointer;
+
+          &:hover {
+            color: #007bff;
+            text-decoration: underline;
+          }
         }
+      }
+    }
+
+    .expanded {
+      z-index: 1;
+      overflow: visible;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
+      height: fit-content;
+
+      .events {
+        overflow: visible;
       }
     }
   }

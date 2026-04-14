@@ -21,6 +21,7 @@ export default function Kailendar({
   onEventClick,
   onTimeClick,
   onDayClick,
+  onDayDoubleClick,
 }: KailendarConfig) {
   return (
     <div className={styles.kailendar}>
@@ -41,6 +42,7 @@ export default function Kailendar({
             ghostEvent={ghostEvent}
             onEventClick={onEventClick}
             onDayClick={onDayClick}
+            onDayDoubleClick={onDayDoubleClick}
           />
         )}
 
@@ -72,6 +74,7 @@ export default function Kailendar({
           <YearView
             currentDate={currentDate}
             onDayClick={onDayClick}
+            onDayDoubleClick={onDayDoubleClick}
             getEvents={getEvents}
             ghostEvent={ghostEvent}
             selectedDate={currentDate}

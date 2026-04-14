@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useCallback, useEffect, useRef } from "react";
 import {
   startOfMonth,
   endOfMonth,
@@ -19,6 +19,7 @@ interface MonthViewProps {
   ghostEvent?: Event;
   onEventClick?: (event: Event) => void;
   onDayClick?: (date: Date) => void;
+  onDayDoubleClick?: (date: Date) => void;
 }
 
 const WEEK_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -29,7 +30,36 @@ export default function MonthView({
   ghostEvent,
   onEventClick,
   onDayClick,
+  onDayDoubleClick,
 }: MonthViewProps) {
+  const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      setExpandedDays((prev) => {
+        if (prev.size === 0) return prev;
+        const target = e.target as HTMLElement;
+        if (target.closest(`.${styles.expanded}`)) return prev;
+        return new Set();
+      });
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleExpanded = useCallback((dayKey: string) => {
+    setExpandedDays((prev) => {
+      const next = new Set(prev);
+      if (next.has(dayKey)) {
+        next.delete(dayKey);
+      } else {
+        next.add(dayKey);
+      }
+      return next;
+    });
+  }, []);
+
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
   const calendarStart = startOfWeek(monthStart);
@@ -45,7 +75,7 @@ export default function MonthView({
     const dayEvents = events
       .filter((e) => isSameDay(e.start, day))
       .sort((a, b) => a.start.getTime() - b.start.getTime());
-    
+
     if (ghostEvent && isSameDay(ghostEvent.start, day)) {
       return [...dayEvents, { ...ghostEvent, id: `ghost-${ghostEvent.id}` }];
     }
@@ -61,23 +91,34 @@ export default function MonthView({
           </div>
         ))}
       </div>
-      <div className={styles.grid}>
+      <div className={styles.grid} ref={gridRef}>
         {days.map((day) => {
           const dayEvents = getDayEvents(day);
-          const ghostEventForDay = ghostEvent && isSameDay(ghostEvent.start, day) ? ghostEvent : null;
-          const regularEvents = dayEvents.filter(e => !e.id.startsWith('ghost-'));
+          const ghostEventForDay =
+            ghostEvent && isSameDay(ghostEvent.start, day) ? ghostEvent : null;
+          const regularEvents = dayEvents.filter(
+            (e) => !e.id.startsWith("ghost-"),
+          );
           const isCurrentMonth = isSameMonth(day, currentDate);
           const isCurrentDay = isToday(day);
+          const dayKey = day.toISOString();
+          const isExpanded = expandedDays.has(dayKey);
+          const maxVisible = ghostEventForDay ? 2 : 3;
+          const hasMore = regularEvents.length > maxVisible;
+          const visibleRegularEvents = isExpanded
+            ? regularEvents
+            : regularEvents.slice(0, maxVisible);
 
           return (
             <div
-              key={day.toISOString()}
-              className={`${styles.dayCell} ${!isCurrentMonth ? styles.otherMonth : ""} ${isCurrentDay ? styles.today : ""}`}
+              key={dayKey}
+              className={`${styles.dayCell} ${!isCurrentMonth ? styles.otherMonth : ""} ${isCurrentDay ? styles.today : ""} ${isExpanded ? styles.expanded : ""}`}
               onClick={() => onDayClick && onDayClick(day)}
+              onDoubleClick={() => onDayDoubleClick && onDayDoubleClick(day)}
             >
               <div className={styles.dayNumber}>{format(day, "d")}</div>
               <div className={styles.events}>
-                {regularEvents.slice(0, ghostEventForDay ? 2 : 3).map((event) => (
+                {visibleRegularEvents.map((event) => (
                   <div
                     key={event.id}
                     className={styles.event}
@@ -94,18 +135,30 @@ export default function MonthView({
                   <div
                     key={`ghost-${ghostEventForDay.id}`}
                     className={`${styles.event} ${styles.ghostEvent}`}
-                    style={{ backgroundColor: ghostEventForDay.color || "#007bff" }}
+                    style={{
+                      backgroundColor: ghostEventForDay.color || "#007bff",
+                    }}
                     onClick={(e) => {
                       e.stopPropagation();
                       onEventClick && onEventClick(ghostEventForDay);
                     }}
                   >
-                    <span className={styles.eventTitle}>{ghostEventForDay.title}</span>
+                    <span className={styles.eventTitle}>
+                      {ghostEventForDay.title}
+                    </span>
                   </div>
                 )}
-                {regularEvents.length > (ghostEventForDay ? 2 : 3) && (
-                  <div className={styles.moreEvents}>
-                    +{regularEvents.length - (ghostEventForDay ? 2 : 3)} more
+                {hasMore && (
+                  <div
+                    className={styles.moreEvents}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleExpanded(dayKey);
+                    }}
+                  >
+                    {isExpanded
+                      ? "show less"
+                      : `+${regularEvents.length - maxVisible} more`}
                   </div>
                 )}
               </div>

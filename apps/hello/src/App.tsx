@@ -280,7 +280,7 @@ function App() {
           ghostEvent={ghostEvent || undefined}
           onEventClick={handleEventClick}
           onTimeClick={handleTimeClick}
-          onDayClick={handleDayClick}
+          onDayDoubleClick={handleDayClick}
           showHeader={true}
         />
       </div>

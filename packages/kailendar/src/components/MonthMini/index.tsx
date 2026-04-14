@@ -24,6 +24,7 @@ interface MonthMiniProps {
   showHeaderButtons?: boolean;
   showHeader?: boolean;
   onDayClick?: (date: Date) => void;
+  onDayDoubleClick?: (date: Date) => void;
   getEvents?: (start: Date, end: Date) => Event[];
   ghostEvent?: Event;
   selectedDate?: Date | null;
@@ -37,6 +38,7 @@ export default function MonthMini({
   showHeader = true,
   showYear = true,
   onDayClick,
+  onDayDoubleClick,
   getEvents,
   ghostEvent,
   selectedDate: externalSelectedDate,
@@ -116,6 +118,7 @@ export default function MonthMini({
                 }
                 onDayClick && onDayClick(day);
               }}
+              onDoubleClick={() => onDayDoubleClick && onDayDoubleClick(day)}
             >
               <span>{format(day, "d")}</span>
               {(dayEvents.length > 0 || hasGhostEvent) && (
