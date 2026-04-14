@@ -14,11 +14,11 @@
 The `apps/hello` directory contains a demo app that showcases all features of the library.
 
 <p align="center">
-  <a href="https://youtu.be/lrXGb_A-wCs">
+  <a href="https://youtu.be/RciKavVdnpQ">
     <img src="./docs/youtube-thumbnail.png" alt="Kailendar demo video" width="400" />
   </a>
   <br>
-  Demo Video
+  <i>Kailendar based calendar app preview</i> 
 </p>
 
 ## Installation
