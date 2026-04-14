@@ -14,8 +14,8 @@
 The `apps/hello` directory contains a demo app that showcases all features of the library.
 
 <p align="center">
-  <a href="http://raw.githubusercontent.com/PiyushXCoder/kailendar/refs/heads/master/docs/youtube-thumbnail.png">
-    <img src="/docs/youtube-thumbnail.png" alt="Kailendar demo video" width="400" />
+  <a href="https://youtu.be/RciKavVdnpQ">
+    <img src="http://raw.githubusercontent.com/PiyushXCoder/kailendar/refs/heads/master/docs/youtube-thumbnail.png" alt="Kailendar demo video" width="400" />
   </a>
   <br>
   <i>Kailendar based calendar app preview</i> 
