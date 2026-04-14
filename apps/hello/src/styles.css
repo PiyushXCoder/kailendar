@@ -22,6 +22,21 @@ body {
   overflow-y: auto;
 }
 
+.github-link {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 8px 0;
+}
+
+.github-link:hover {
+  color: #333;
+}
+
 .create-button {
   padding: 12px 24px;
   background-color: #1a73e8;
