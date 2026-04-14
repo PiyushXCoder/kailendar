@@ -8,8 +8,7 @@ interface TimeColumnProps {
 export default function TimeColumn({ hours }: TimeColumnProps) {
   return (
     <div className={styles.timeColumn}>
-      <div key={-1} className={styles.timeLabel}></div>
-      {hours.slice(1).map((hour) => (
+      {hours.map((hour) => (
         <div key={hour} className={styles.timeLabel}>
           {format(new Date().setHours(hour, 0), "h a")}
         </div>

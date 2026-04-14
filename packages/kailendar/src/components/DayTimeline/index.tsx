@@ -48,8 +48,7 @@ export default function DayTimeline({
   }, []);
 
   const dayStart = startOfDay(currentDate);
-  const dayEnd = new Date(dayStart);
-  dayEnd.setDate(dayEnd.getDate() + 1);
+  const dayEnd = addDays(dayStart, 1);
 
   const isCurrentDay = isSameDay(currentDate, now);
   const currentTimeTop = isCurrentDay
@@ -58,8 +57,8 @@ export default function DayTimeline({
 
   const events = getEvents ? getEvents(dayStart, dayEnd) : [];
   const dayEvents = useMemo(
-    () => events.filter((e) => isSameDay(e.start, currentDate)),
-    [events, currentDate],
+    () => events.filter((e) => e.start < dayEnd && e.end > dayStart),
+    [events, dayStart, dayEnd],
   );
 
   const ghostEventForDay =
@@ -112,11 +111,16 @@ export default function DayTimeline({
       const columnIndex = getOverlapColumnIndex(event, totalColumns);
       const width = 100 / totalColumns;
       const left = (columnIndex / totalColumns) * 100;
+
+      // Clamp event display to day boundaries
+      const displayStart = event.start < dayStart ? dayStart : event.start;
+      const displayEnd = event.end > dayEnd ? dayEnd : event.end;
+
       const top =
-        (differenceInMinutes(event.start, dayStart) / 60) * HOUR_HEIGHT;
+        (differenceInMinutes(displayStart, dayStart) / 60) * HOUR_HEIGHT;
       const height = Math.max(
         30,
-        (differenceInMinutes(event.end, event.start) / 60) * HOUR_HEIGHT,
+        (differenceInMinutes(displayEnd, displayStart) / 60) * HOUR_HEIGHT,
       );
       return { event, width, left, top, height };
     });
@@ -186,7 +190,7 @@ export default function DayTimeline({
                 style={{
                   top: `${top}px`,
                   height: `${height}px`,
-                  width: `calc(${width}% - 20px)`,
+                  width: `calc(${width}% - 8px)`,
                   left: `calc(${left}% + 4px)`,
                   backgroundColor: displayEvent.color || "#007bff",
                   color: "#fff",
