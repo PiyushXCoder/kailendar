@@ -11,6 +11,7 @@ import {
   isToday,
 } from "date-fns";
 import { Event } from "../../utils/types";
+import { DAYS_OF_WEEK } from "../../utils/constants";
 import styles from "./styles.module.scss";
 
 interface MonthViewProps {
@@ -22,7 +23,7 @@ interface MonthViewProps {
   onDayDoubleClick?: (date: Date) => void;
 }
 
-const WEEK_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 
 export default function MonthView({
   currentDate,
@@ -85,7 +86,7 @@ export default function MonthView({
   return (
     <div className={styles.monthView}>
       <div className={styles.header}>
-        {WEEK_DAYS.map((day) => (
+        {DAYS_OF_WEEK.map((day) => (
           <div key={day} className={styles.dayHeader}>
             {day}
           </div>

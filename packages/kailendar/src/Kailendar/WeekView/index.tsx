@@ -4,6 +4,7 @@ import DayTimeline from "../../components/DayTimeline";
 import { Event } from "../../utils/types";
 import styles from "./styles.module.scss";
 import TimeColumn from "../../components/TimeColumn";
+import { HOUR_HEIGHT, START_HOUR, END_HOUR } from "../../utils/constants";
 
 interface WeekViewProps {
   currentDate: Date;
@@ -14,10 +15,6 @@ interface WeekViewProps {
   onEventClick?: (event: Event) => void;
   onTimeClick?: (time: Date) => void;
 }
-
-const HOUR_HEIGHT = 60;
-const START_HOUR = 0;
-const END_HOUR = 24;
 
 export default function WeekView({
   currentDate,

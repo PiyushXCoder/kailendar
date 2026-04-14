@@ -19,3 +19,8 @@ export const DAYS_OF_WEEK = [
   "Fri",
   "Sat",
 ] as const;
+
+// Timeline constants
+export const HOUR_HEIGHT = 60;
+export const START_HOUR = 0;
+export const END_HOUR = 24;

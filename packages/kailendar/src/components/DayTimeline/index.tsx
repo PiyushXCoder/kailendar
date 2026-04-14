@@ -12,6 +12,7 @@ import styles from "./styles.module.scss";
 import TimeColumn from "../TimeColumn";
 import { Event } from "../../utils/types";
 import NextIcon from "../../assets/next.svg?react";
+import { HOUR_HEIGHT, START_HOUR, END_HOUR } from "../../utils/constants";
 
 interface DayTimelineProps {
   currentDate: Date;
@@ -26,10 +27,6 @@ interface DayTimelineProps {
   scrollable?: boolean;
   contentRef?: React.RefObject<HTMLDivElement | null>;
 }
-
-const HOUR_HEIGHT = 60;
-const START_HOUR = 0;
-const END_HOUR = 24;
 
 export default function DayTimeline({
   currentDate,
