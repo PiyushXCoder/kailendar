@@ -1,6 +1,6 @@
 {
   "name": "kailendar",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "main": "./dist/kailendar.umd.cjs",
   "module": "./dist/kailendar.js",
