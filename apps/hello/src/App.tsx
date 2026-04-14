@@ -4,8 +4,8 @@ import {
   type Event,
   KAILENDAR_VIEWS,
 } from "kailendar";
-import { useState, useCallback } from "react";
-import { format, addHours, startOfDay } from "date-fns";
+import { useState, useCallback, useRef } from "react";
+import { format, addHours, startOfDay, isSameDay } from "date-fns";
 import { colors, generateMockEvents } from "./data";
 import "./styles.css";
 
@@ -149,6 +149,79 @@ function EventModal({
   );
 }
 
+interface DayEventsModalProps {
+  date: Date | null;
+  events: Event[];
+  isOpen: boolean;
+  onClose: () => void;
+  onEventClick: (event: Event) => void;
+}
+
+function DayEventsModal({
+  date,
+  events,
+  isOpen,
+  onClose,
+  onEventClick,
+}: DayEventsModalProps) {
+  if (!isOpen || !date) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2 className="modal-title">{format(date, "EEEE, MMMM d, yyyy")}</h2>
+          <button className="close-button" onClick={onClose}>
+            &times;
+          </button>
+        </div>
+        <div className="modal-body">
+          {events.length === 0 ? (
+            <p style={{ color: "#666", textAlign: "center" }}>No events</p>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {events.map((event) => (
+                <div
+                  key={event.id}
+                  className="day-event-item"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: 8,
+                    borderRadius: 4,
+                    cursor: "pointer",
+                    backgroundColor: "#f5f5f5",
+                  }}
+                  onClick={() => onEventClick(event)}
+                >
+                  <div
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: "50%",
+                      backgroundColor: event.color || "#007bff",
+                      flexShrink: 0,
+                    }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 500, fontSize: 14 }}>
+                      {event.title}
+                    </div>
+                    <div style={{ fontSize: 12, color: "#666" }}>
+                      {format(event.start, "HH:mm")} – {format(event.end, "HH:mm")}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<KailendarView>(KAILENDAR_VIEWS.WEEK);
@@ -157,6 +230,9 @@ function App() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNewEvent, setIsNewEvent] = useState(false);
+  const [dayEventsDate, setDayEventsDate] = useState<Date | null>(null);
+  const [isDayEventsModalOpen, setIsDayEventsModalOpen] = useState(false);
+  const clickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const getEvents = useCallback(
     (start: Date, end: Date): Event[] => {
@@ -183,6 +259,38 @@ function App() {
   }, []);
 
   const handleDayClick = useCallback((date: Date) => {
+    if (view === KAILENDAR_VIEWS.YEAR) {
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+        clickTimeoutRef.current = null;
+      }
+      clickTimeoutRef.current = setTimeout(() => {
+        setDayEventsDate(date);
+        setIsDayEventsModalOpen(true);
+      }, 250);
+      return;
+    }
+    const dayStart = startOfDay(date);
+    const startTime = new Date(dayStart.setHours(9, 0, 0, 0));
+    const endTime = new Date(dayStart.setHours(10, 0, 0, 0));
+    const newEvent: Event = {
+      id: `temp-${Date.now()}`,
+      title: "New Event",
+      color: colors[0],
+      start: startTime,
+      end: endTime,
+    };
+    setGhostEvent(newEvent);
+    setSelectedEvent(newEvent);
+    setIsNewEvent(true);
+    setIsModalOpen(true);
+  }, [view]);
+
+  const handleDayDoubleClick = useCallback((date: Date) => {
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+      clickTimeoutRef.current = null;
+    }
     const dayStart = startOfDay(date);
     const startTime = new Date(dayStart.setHours(9, 0, 0, 0));
     const endTime = new Date(dayStart.setHours(10, 0, 0, 0));
@@ -230,6 +338,27 @@ function App() {
     setIsModalOpen(false);
     setSelectedEvent(null);
     setGhostEvent(null);
+  }, []);
+
+  const dayEventsList = dayEventsDate
+    ? events.filter((e) => isSameDay(e.start, dayEventsDate))
+    : [];
+
+  const handleDayEventsModalClose = useCallback(() => {
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+      clickTimeoutRef.current = null;
+    }
+    setIsDayEventsModalOpen(false);
+    setDayEventsDate(null);
+  }, []);
+
+  const handleDayEventClick = useCallback((event: Event) => {
+    setIsDayEventsModalOpen(false);
+    setDayEventsDate(null);
+    setSelectedEvent(event);
+    setIsNewEvent(false);
+    setIsModalOpen(true);
   }, []);
 
   return (
@@ -280,7 +409,8 @@ function App() {
           ghostEvent={ghostEvent || undefined}
           onEventClick={handleEventClick}
           onTimeClick={handleTimeClick}
-          onDayDoubleClick={handleDayClick}
+          onDayClick={handleDayClick}
+          onDayDoubleClick={handleDayDoubleClick}
           showHeader={true}
         />
       </div>
@@ -292,6 +422,13 @@ function App() {
         onSave={handleSaveEvent}
         onDelete={handleDeleteEvent}
         isNew={isNewEvent}
+      />
+      <DayEventsModal
+        date={dayEventsDate}
+        events={dayEventsList}
+        isOpen={isDayEventsModalOpen}
+        onClose={handleDayEventsModalClose}
+        onEventClick={handleDayEventClick}
       />
     </div>
   );
