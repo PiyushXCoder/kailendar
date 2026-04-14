@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/docs/cover.png" alt="Kailendar logo" width="900" />
+  <img src="https://raw.githubusercontent.com/PiyushXCoder/kailendar/refs/heads/master/docs/cover.png" alt="Kailendar logo" width="900" />
 </p>
 
 <h3 align="center">Kailendar</h3>
@@ -14,7 +14,7 @@
 The `apps/hello` directory contains a demo app that showcases all features of the library.
 
 <p align="center">
-  <a href="https://youtu.be/RciKavVdnpQ">
+  <a href="http://raw.githubusercontent.com/PiyushXCoder/kailendar/refs/heads/master/docs/youtube-thumbnail.png">
     <img src="/docs/youtube-thumbnail.png" alt="Kailendar demo video" width="400" />
   </a>
   <br>

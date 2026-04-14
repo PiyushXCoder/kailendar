@@ -1,6 +1,7 @@
 {
   "name": "kailendar",
-  "version": "0.0.2",
+  "description": "A flexible React calendar component library with multiple views.",
+  "version": "0.0.3",
   "type": "module",
   "main": "./dist/kailendar.umd.cjs",
   "module": "./dist/kailendar.js",
